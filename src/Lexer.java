@@ -13,6 +13,8 @@ public class Lexer {
     };
     public static final ArrayList<String> words = new ArrayList<String>();
 
+    public static int varSpaces = 0;
+
     public static ArrayList<Token> lex(String in) {
         ArrayList<Token> tokens = new ArrayList<>();
 
@@ -34,31 +36,20 @@ public class Lexer {
                         firstChar = lines[i].toCharArray()[0];
                     }
 
-                    //check for :flags or /comments
 
-                    if (firstChar == ':') {
-                        //flag
-                        String name = getNextWord(lines[i], 1);
-                        tokens.add(new Token(TokenName.FLAG, name));
-                        //System.out.println("FLAG: " + name );                                                           //print here
+                    //actual words
 
-                    } else if (firstChar == '/' && lines[i].toCharArray()[1] == '/') {
-                        //return no token
-                    } else {
-                        //actual words
+                    String remainingLine = lines[i];
+                    int index = 0;
 
-                        String remainingLine = lines[i];
-                        int index = 0;
-
-                        //get a list of words
-                        while (remainingLine.length() > 0) {
-                            remainingLine = remainingLine.trim();
-                            String word = getNextWord(remainingLine, 0);
-                            words.add(word);
-                            //System.out.println(word);                                                                   //print here
-                            index = word.length();
-                            remainingLine = remainingLine.substring(index);
-                        }
+                    //get a list of words
+                    while (remainingLine.length() > 0) {
+                        remainingLine = remainingLine.trim();
+                        String word = getNextWord(remainingLine, 0);
+                        words.add(word);
+                        //System.out.println(word);                                                                   //print here
+                        index = word.length();
+                        remainingLine = remainingLine.substring(index);
                     }
                 } else {} // return no tokens
             }
@@ -69,25 +60,35 @@ public class Lexer {
             String firstChar = Character.toString(word.toCharArray()[0]);
             String nextWord = words.get(i + 1);
             String nextArg = "";
-            TokenName name;
+            TokenName name = null;
             switch (firstChar) {
                 // keeping it in decimal for the sake of it
                     //ignore bases. idc. decimal based.
                 case "%":   //I KNOW THEYRE REPETITIVE. SHUT UP.
                     //decimal to hex
-                    name = TokenName.VALUE;
+                    name = TokenName.HEXVALUE;
                     nextArg = word.substring(1);
                     break;
                 case "$":
                     //leave as is
-                    name = TokenName.VALUE;
+                    name = TokenName.DECVALUE;
                     nextArg = word.substring(1);
                     break;
                 case "#":
                     //binary to hex
-                    name = TokenName.VALUE;
+                    name = TokenName.BINVALUE;
                     nextArg = word.substring(1);
                     break;
+                //check for :flags or /comments
+                case ":":
+                    name = TokenName.FLAG;
+                    nextArg = nextWord;
+                    break;
+                case "/":
+                    if (word.toCharArray()[1] == '/') {
+                        //return no token
+                        break;
+                    }
                 default:
                     switch (word) {
                         case "subroutine":
@@ -96,27 +97,33 @@ public class Lexer {
                             break;
                         case "uint":
                             name = TokenName.UINT;
-                            nextArg = nextWord;
+                            varSpaces++;
+                            nextArg = "" + varSpaces;
                             break;
                         case "int":
                             name = TokenName.INT;
-                            nextArg = nextWord;
+                            varSpaces++;
+                            nextArg = "" + varSpaces;
                             break;
                         case "udouble":
                             name = TokenName.UDOUBLE;
-                            nextArg = nextWord;
+                            varSpaces++;
+                            nextArg = "" + varSpaces;
                             break;
                         case "double":
                             name = TokenName.DOUBLE;
-                            nextArg = nextWord;
+                            varSpaces++;
+                            nextArg = "" + varSpaces;
                             break;
                         case "bool":
                             name = TokenName.BOOL;
-                            nextArg = nextWord;
+                            varSpaces++;
+                            nextArg = "" + varSpaces;
                             break;
                         case "char":
                             name = TokenName.CHAR;
-                            nextArg = nextWord;
+                            varSpaces++;
+                            nextArg = "" + varSpaces;
                             break;
                         case "[":
                             name = TokenName.OPENBRACKET;
@@ -143,7 +150,7 @@ public class Lexer {
                             break;
                         case "=":
                             name = TokenName.OPERATION;
-                            nextArg = "SUBTRACT";
+                            nextArg = "ASSIGN";
                             break;
                         case "+":
                             name = TokenName.OPERATION;
@@ -199,7 +206,10 @@ public class Lexer {
                             break;
                     }
             }
-            tokens.add(new Token(name, nextArg));
+            if (name != null) {
+                tokens.add(new Token(name, nextArg));
+            }
+
         }
         return tokens;
     }

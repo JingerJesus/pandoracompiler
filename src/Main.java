@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Main {
     public static File inFile;
     public static String preLexer = "";
+    public static ArrayList<Token> postLexer;
     public static void main(String[] args) throws IOException {
         inFile = new File(args[0]);
 
@@ -16,12 +17,20 @@ public class Main {
         }
 
         System.out.println(preLexer + "\n\n");
-        ArrayList<Token> postLexer = Lexer.lex(preLexer);
+        postLexer = Lexer.lex(preLexer);
 
         //debug & validation
-//        for (Token token : postLexer) {
-//            System.out.println(token);
-//        }
+        for (Token token : postLexer) {
+            System.out.println(token);
+        }
+
+        ArrayList<ArrayList<Token>> parsed = Parser.parse(postLexer);
+        for (ArrayList<Token> line : parsed) {
+            for (Token token : line) {
+                System.out.print(token.name + " ");
+            }
+            System.out.println("\n\n");
+        }
 
     }
 }

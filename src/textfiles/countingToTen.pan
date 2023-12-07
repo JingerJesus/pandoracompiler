@@ -4,9 +4,9 @@ subroutine count[uint in];
 end;
 
 uint counter = %0;
-   :flagA
+    :flagA
 jumpif flagB counter == %10;
 counter = count[counter];
 jump flagA;
-:flagB
+    :flagB
 halt;
