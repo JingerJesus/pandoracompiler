@@ -9,7 +9,7 @@ public class Parser {
         ArrayList<Token> currentLine = new ArrayList<Token>();
         for (Token token : tokens) {
             currentLine.add(token);
-            if (token.name == TokenName.STOP || token.name == TokenName.FLAG || token.name == TokenName.HALT) {
+            if (token.name == TokenName.STOP || token.name == TokenName.FLAG) {
                 lines.add(currentLine);
                 currentLine = new ArrayList<Token>();
             }
