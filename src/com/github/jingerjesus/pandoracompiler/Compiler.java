@@ -1,3 +1,5 @@
+package com.github.jingerjesus.pandoracompiler;
+
 import java.util.ArrayList;
 
 public class Compiler {

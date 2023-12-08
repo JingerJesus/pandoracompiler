@@ -1,3 +1,4 @@
+package com.github.jingerjesus.pandoracompiler;
 
 public class Token {
     public TokenName name;
