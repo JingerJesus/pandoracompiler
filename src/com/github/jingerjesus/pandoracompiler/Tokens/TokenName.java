@@ -1,4 +1,4 @@
-package com.github.jingerjesus.pandoracompiler;
+package com.github.jingerjesus.pandoracompiler.Tokens;
 
 public enum TokenName {
         UINT, INT, UDOUBLE, DOUBLE, BOOL, CHAR, OPERATION, END, FLAG, SUBROUTINE, RETURN, STOP, MODE, UNKNOWN,

@@ -1,5 +1,8 @@
 package com.github.jingerjesus.pandoracompiler;
 
+import com.github.jingerjesus.pandoracompiler.Tokens.Token;
+import com.github.jingerjesus.pandoracompiler.Tokens.TokenName;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -66,12 +69,12 @@ public class Lexer {
             switch (firstChar) {
                 // keeping it in decimal for the sake of it
                     //ignore bases. idc. decimal based.
-                case "%":   //I KNOW THEYRE REPETITIVE. SHUT UP.
+                case "$":   //I KNOW THEYRE REPETITIVE. SHUT UP.
                     //decimal to hex
                     name = TokenName.HEXVALUE;
                     nextArg = word.substring(1);
                     break;
-                case "$":
+                case "%":
                     //leave as is
                     name = TokenName.DECVALUE;
                     nextArg = word.substring(1);
@@ -87,45 +90,49 @@ public class Lexer {
                     nextArg = nextWord;
                     break;
                 case "/":
-                    if (word.toCharArray()[1] == '/') {
+                    if (word.toCharArray().length > 1 && word.toCharArray()[1] == '/') {
                         //return no token
                         break;
                     }
+                    name = TokenName.OPERATION;
+                    nextArg = "DIVIDE";
+                    break;
                 default:
                     switch (word) {
                         case "subroutine":
                             name = TokenName.SUBROUTINE;
                             nextArg = nextWord;
+                            i++; //ignore the name token after this.
                             break;
                         case "uint":
                             name = TokenName.UINT;
-                            varSpaces++;
-                            nextArg = "" + varSpaces;
+                            nextArg = nextWord;
+                            i++; //ignore the name token after this.
                             break;
                         case "int":
                             name = TokenName.INT;
-                            varSpaces++;
-                            nextArg = "" + varSpaces;
+                            nextArg = nextWord;
+                            i++; //ignore the name token after this.
                             break;
                         case "udouble":
                             name = TokenName.UDOUBLE;
-                            varSpaces++;
-                            nextArg = "" + varSpaces;
+                            nextArg = nextWord;
+                            i++; //ignore the name token after this.
                             break;
                         case "double":
                             name = TokenName.DOUBLE;
-                            varSpaces++;
-                            nextArg = "" + varSpaces;
+                            nextArg = nextWord;
+                            i++; //ignore the name token after this.
                             break;
                         case "bool":
                             name = TokenName.BOOL;
-                            varSpaces++;
-                            nextArg = "" + varSpaces;
+                            nextArg = nextWord;
+                            i++; //ignore the name token after this.
                             break;
                         case "char":
                             name = TokenName.CHAR;
-                            varSpaces++;
-                            nextArg = "" + varSpaces;
+                            nextArg = nextWord;
+                            i++; //ignore the name token after this.
                             break;
                         case "[":
                             name = TokenName.OPENBRACKET;
@@ -157,6 +164,10 @@ public class Lexer {
                         case "+":
                             name = TokenName.OPERATION;
                             nextArg = "ADD";
+                            break;
+                        case "-":
+                            name = TokenName.OPERATION;
+                            nextArg = "SUB";
                             break;
                         case "/":
                             name = TokenName.OPERATION;

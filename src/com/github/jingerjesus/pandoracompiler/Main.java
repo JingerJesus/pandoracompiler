@@ -1,5 +1,8 @@
 package com.github.jingerjesus.pandoracompiler;
 
+import com.github.jingerjesus.pandoracompiler.AST.Node;
+import com.github.jingerjesus.pandoracompiler.Tokens.Token;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,13 +29,17 @@ public class Main {
             System.out.println(token);
         }
 
-        ArrayList<ArrayList<Token>> parsed = Parser.parse(postLexer);
+        ArrayList<ArrayList<Token>> parsed = Parser.breakIntoLines(postLexer);
         for (ArrayList<Token> line : parsed) {
             for (Token token : line) {
                 System.out.print(token.name + " ");
             }
             System.out.println("\n\n");
         }
+
+        Parser.init(postLexer);
+        Node tree = Parser.parseLine();
+        System.out.println(tree);
 
     }
 }

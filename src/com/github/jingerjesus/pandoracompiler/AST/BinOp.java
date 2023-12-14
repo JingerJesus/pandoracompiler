@@ -1,7 +1,7 @@
 package com.github.jingerjesus.pandoracompiler.AST;
 
-import com.github.jingerjesus.pandoracompiler.Token;
-import com.github.jingerjesus.pandoracompiler.TokenName;
+import com.github.jingerjesus.pandoracompiler.Tokens.Token;
+import com.github.jingerjesus.pandoracompiler.Tokens.TokenName;
 
 public class BinOp extends Node {
     // a binary operation has three child nodes:
