@@ -1,6 +1,7 @@
 package com.github.jingerjesus.pandoracompiler;
 
 import com.github.jingerjesus.pandoracompiler.AST.Node;
+import com.github.jingerjesus.pandoracompiler.AST.NodeVisitor;
 import com.github.jingerjesus.pandoracompiler.Tokens.Token;
 
 import java.io.File;
@@ -40,6 +41,13 @@ public class Main {
         Parser.init(postLexer);
         Node tree = Parser.parseLine();
         System.out.println(tree);
+
+        System.out.println("\n\n" + NodeVisitor.visit(tree));
+
+        System.out.println(tree.getValue().intValue());
+
+
+        System.out.println("\n\n" + Compiler.getAssembledFromAST(tree));
 
     }
 }

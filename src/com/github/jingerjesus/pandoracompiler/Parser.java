@@ -2,7 +2,7 @@ package com.github.jingerjesus.pandoracompiler;
 
 import com.github.jingerjesus.pandoracompiler.AST.BinOp;
 import com.github.jingerjesus.pandoracompiler.AST.Node;
-import com.github.jingerjesus.pandoracompiler.AST.Num;
+import com.github.jingerjesus.pandoracompiler.AST.Uint;
 import com.github.jingerjesus.pandoracompiler.Tokens.Token;
 import com.github.jingerjesus.pandoracompiler.Tokens.TokenName;
 
@@ -56,7 +56,7 @@ public class Parser {
         Token t = currentToken;
         if (t.name == TokenName.DECVALUE) {
             eat(TokenName.DECVALUE);
-            return new Num(t);
+            return new Uint(t);
         } else if (t.name == TokenName.OPENBRACKET) {
             eat(TokenName.OPENBRACKET);
             Node n = expr();
