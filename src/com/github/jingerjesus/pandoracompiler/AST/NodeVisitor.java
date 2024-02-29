@@ -8,6 +8,8 @@ public class NodeVisitor {
             return visitBinOp((BinOp) n);
         } else if (n.getClass().equals(Uint.class)) {
             return visitUint((Uint) n);
+        } else if (n.getClass().equals(UnaOp.class)) {
+            return visitUnaOp((UnaOp) n);
         } else throw new RuntimeException("Bad Node type.");
     }
 
@@ -39,5 +41,9 @@ public class NodeVisitor {
 
     private static String visitUint(Uint n) {
         return n.value;
+    }
+
+    private static String visitUnaOp(UnaOp n) {
+        return n.getValue().toString();
     }
 }

@@ -41,7 +41,6 @@ public class Lexer {
                         firstChar = lines[i].toCharArray()[0];
                     }
 
-
                     //actual words
 
                     String remainingLine = lines[i];
@@ -52,7 +51,7 @@ public class Lexer {
                         remainingLine = remainingLine.trim();
                         String word = getNextWord(remainingLine, 0);
                         words.add(word);
-                        //System.out.println(word);                                                                   //print here
+                        //System.out.println(word);                                                                       //print here
                         index = word.length();
                         remainingLine = remainingLine.substring(index);
                     }
@@ -214,7 +213,7 @@ public class Lexer {
                             nextArg = "FALSE";
                             break;
                         default:    // assume token is a variable name.
-                            name = TokenName.NAME;
+                            name = TokenName.VARNAME;
                             nextArg = word;
                             break;
                     }

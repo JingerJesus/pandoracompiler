@@ -3,6 +3,7 @@ package com.github.jingerjesus.pandoracompiler;
 import com.github.jingerjesus.pandoracompiler.AST.BinOp;
 import com.github.jingerjesus.pandoracompiler.AST.Node;
 import com.github.jingerjesus.pandoracompiler.AST.Uint;
+import com.github.jingerjesus.pandoracompiler.AST.UnaOp;
 import com.github.jingerjesus.pandoracompiler.Tokens.Token;
 import com.github.jingerjesus.pandoracompiler.Tokens.TokenName;
 
@@ -54,6 +55,14 @@ public class Parser {
 
     private static Node factor() {
         Token t = currentToken;
+        if (t.name == TokenName.OPERATION && t.value == "ADD") {
+            eat(TokenName.OPERATION);
+            return new UnaOp(t, factor());
+        }
+        if (t.name == TokenName.OPERATION && t.value == "SUB") {
+            eat(TokenName.OPERATION);
+            return new UnaOp(t, factor());
+        }
         if (t.name == TokenName.DECVALUE) {
             eat(TokenName.DECVALUE);
             return new Uint(t);
@@ -63,6 +72,7 @@ public class Parser {
                 eat (TokenName.CLOSEBRACKET);
             return n;
         }
+        System.out.println("Token name did not match any factor() examples.");
         error();
         return null;
     }

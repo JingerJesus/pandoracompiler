@@ -14,6 +14,9 @@ public class Main {
     public static String preLexer = "";
     public static ArrayList<Token> postLexer;
     public static void main(String[] args) throws IOException {
+
+        Compiler.initHashmaps();
+
         inFile = new File(args[0]);
 
         Scanner sc = new Scanner(inFile);
@@ -27,7 +30,7 @@ public class Main {
 
         //debug & validation
         for (Token token : postLexer) {
-            System.out.println(token);
+            //System.out.println(token);
         }
 
         ArrayList<ArrayList<Token>> parsed = Parser.breakIntoLines(postLexer);
@@ -40,14 +43,17 @@ public class Main {
 
         Parser.init(postLexer);
         Node tree = Parser.parseLine();
-        System.out.println(tree);
+        //System.out.println(tree);
 
         System.out.println("\n\n" + NodeVisitor.visit(tree));
 
         System.out.println(tree.getValue().intValue());
 
-
         System.out.println("\n\n" + Compiler.getAssembledFromAST(tree));
+
+        //Compiler.determineRuntime(Compiler.getAssembledFromAST(tree), 1000);
+
+
 
     }
 }
