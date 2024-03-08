@@ -30,7 +30,7 @@ public class Main {
 
         //debug & validation
         for (Token token : postLexer) {
-            //System.out.println(token);
+            System.out.println(token);
         }
 
         ArrayList<ArrayList<Token>> parsed = Parser.breakIntoLines(postLexer);
@@ -42,7 +42,7 @@ public class Main {
         }
 
         Parser.init(postLexer);
-        Node tree = Parser.parseLine();
+        Node tree = Parser.parse();
         //System.out.println(tree);
 
         System.out.println("\n\n" + NodeVisitor.visit(tree));

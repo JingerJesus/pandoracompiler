@@ -1,5 +1,7 @@
 package com.github.jingerjesus.pandoracompiler.AST;
 
+import com.github.jingerjesus.pandoracompiler.VariableStorer;
+
 import java.util.Optional;
 
 public class NodeVisitor {
@@ -10,10 +12,35 @@ public class NodeVisitor {
             return visitUint((Uint) n);
         } else if (n.getClass().equals(UnaOp.class)) {
             return visitUnaOp((UnaOp) n);
+        } else if (n.getClass().equals(CompoundStatement.class)) {
+            return visitCompoundStatement((CompoundStatement) n);
+        } else if (n.getClass().equals(NoOp.class)) {
+            return "";
+        } else if (n.getClass().equals(Var.class)) {
+            return visitVar((Var) n);
+        } else if (n.getClass().equals(AssignOp.class)) {
+            return visitAssign((AssignOp) n);
         } else throw new RuntimeException("Bad Node type.");
     }
 
+    private static String visitVar(Var n) {
+        String name = n.value;
+        VariableStorer.GLOBAL_SCOPE.put(name, n.getValue());
+        return "";
+    }
 
+    private static String visitAssign(AssignOp n) {
+        //
+        return "";
+    }
+
+    private static String visitCompoundStatement(CompoundStatement n) {
+        String out = "";
+        for (Node c : n.getChildNodes()) {
+            out += visit(c);
+        }
+        return out;
+    }
 
     private static String visitBinOp(BinOp n) {
         Node left = n.getChildNodes()[0];

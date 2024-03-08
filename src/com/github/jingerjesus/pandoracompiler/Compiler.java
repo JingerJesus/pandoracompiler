@@ -72,7 +72,7 @@ public class Compiler {
     }
 
     public static void determineRuntime(String assembly, int clockSpeedHertz) {
-        //Currently misbehaving.
+        //Currently misbehaving. DNI.
         int clockCycles = 0;
         double cycleTime = 1.0/clockSpeedHertz;
 

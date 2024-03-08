@@ -1,9 +1,6 @@
 package com.github.jingerjesus.pandoracompiler;
 
-import com.github.jingerjesus.pandoracompiler.AST.BinOp;
-import com.github.jingerjesus.pandoracompiler.AST.Node;
-import com.github.jingerjesus.pandoracompiler.AST.Uint;
-import com.github.jingerjesus.pandoracompiler.AST.UnaOp;
+import com.github.jingerjesus.pandoracompiler.AST.*;
 import com.github.jingerjesus.pandoracompiler.Tokens.Token;
 import com.github.jingerjesus.pandoracompiler.Tokens.TokenName;
 
@@ -41,7 +38,10 @@ public class Parser {
         System.out.println("Attempting to eat token " + type);
         if (currentToken.name == type) {
             currentToken = getNextToken();
-        } else error();
+        } else {
+            System.out.println("Ate incorrect token, tried to eat " + type + ", failed to eat " + currentToken.name);
+            error();
+        }
     }
 
     private static Token getNextToken() {
@@ -71,10 +71,10 @@ public class Parser {
             Node n = expr();
                 eat (TokenName.CLOSEBRACKET);
             return n;
+        } else {
+            Node n = variable();
+            return n;
         }
-        System.out.println("Token name did not match any factor() examples.");
-        error();
-        return null;
     }
 
     private static Node term() {
@@ -100,8 +100,78 @@ public class Parser {
         }
         return n;
     }
-    public static Node parseLine() {
-        return expr();
+
+    private static Node program() {
+        Node n = compoundStatement();
+        eat(TokenName.HALT);
+        return n;
+    }
+
+    private static Node compoundStatement() {
+        Node[] ns = statementList();
+        Node root = new CompoundStatement();
+        root.setChildNodes(ns);
+        return root;
+    }
+
+    private static Node[] statementList() {
+        Node n = statement();
+        ArrayList<Node> results = new ArrayList<Node>();
+        results.add(n);
+
+        while (currentToken.name.equals(TokenName.STOP)) {
+            eat(TokenName.STOP);
+            results.add(statement());
+        }
+        if (currentToken.name.equals(TokenName.VARNAME)) {
+            System.out.println("Found VARNAME token as last token in StatementList.");
+            error();
+        }
+
+        System.out.println("Statement count: " + results.size());
+        return results.toArray(new Node[results.size()]);
+    }
+
+    private static Node statement() {
+        Node n;
+        if (currentToken.name.equals(TokenName.PROGRAMSTART)) {
+            eat(TokenName.PROGRAMSTART);
+            n = compoundStatement();
+
+        } else if (currentToken.name.equals(TokenName.UINT)) {
+            n = assignmentStatement();
+        } else {
+            n = empty();
+        }
+        return n;
+    }
+
+    private static Node assignmentStatement() {
+        Node ln = variable();
+        Token tk = currentToken;
+        eat(TokenName.OPERATION);
+        Node rn = expr();
+        Node n = new AssignOp(ln, tk, rn);
+        return n;
+    }
+
+    private static Node variable() {
+        Node n = new Var(currentToken);
+        eat(TokenName.UINT);
+        return n;
+    }
+
+    private static Node empty() {
+        return new NoOp();
+    }
+
+    public static Node parse() {
+        Node n = program();
+        if (currentToken.name != TokenName.STOP) {
+            System.out.println("No HALT instruction.");
+            error();
+        }
+        return n;
     }
 
 

@@ -22,6 +22,7 @@ public class Lexer {
 
     public static ArrayList<Token> lex(String in) {
         ArrayList<Token> tokens = new ArrayList<>();
+        tokens.add(new Token(TokenName.PROGRAMSTART, ""));
 
         input = in;
         Scanner sc = new Scanner(in);
