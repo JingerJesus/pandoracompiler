@@ -47,7 +47,11 @@ public class Main {
 
         System.out.println("\n\n" + NodeVisitor.visit(tree));
 
-        System.out.println(tree.getValue().intValue());
+        System.out.println("GLOBAL SCOPE: ");
+        System.out.println(VariableStorer.getGlobalScope());
+        System.out.println("END GLOBAL SCOPE");
+
+        //System.out.println(tree.getValue().intValue());
 
         System.out.println("\n\n" + Compiler.getAssembledFromAST(tree));
 

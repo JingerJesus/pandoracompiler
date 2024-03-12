@@ -107,32 +107,32 @@ public class Lexer {
                         case "uint":
                             name = TokenName.UINT;
                             nextArg = nextWord;
-                            i++; //ignore the name token after this.
+                            //i++; //ignore the name token after this.
                             break;
                         case "int":
                             name = TokenName.INT;
                             nextArg = nextWord;
-                            i++; //ignore the name token after this.
+                            //i++; //ignore the name token after this.
                             break;
                         case "udouble":
                             name = TokenName.UDOUBLE;
                             nextArg = nextWord;
-                            i++; //ignore the name token after this.
+                            //i++; //ignore the name token after this.
                             break;
                         case "double":
                             name = TokenName.DOUBLE;
                             nextArg = nextWord;
-                            i++; //ignore the name token after this.
+                            //i++; //ignore the name token after this.
                             break;
                         case "bool":
                             name = TokenName.BOOL;
                             nextArg = nextWord;
-                            i++; //ignore the name token after this.
+                            //i++; //ignore the name token after this.
                             break;
                         case "char":
                             name = TokenName.CHAR;
                             nextArg = nextWord;
-                            i++; //ignore the name token after this.
+                            //i++; //ignore the name token after this.
                             break;
                         case "[":
                             name = TokenName.OPENBRACKET;

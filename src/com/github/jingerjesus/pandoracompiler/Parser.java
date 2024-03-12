@@ -147,6 +147,7 @@ public class Parser {
     }
 
     private static Node assignmentStatement() {
+        eat(getVarType(currentToken));
         Node ln = variable();
         Token tk = currentToken;
         eat(TokenName.OPERATION);
@@ -157,8 +158,19 @@ public class Parser {
 
     private static Node variable() {
         Node n = new Var(currentToken);
-        eat(TokenName.UINT);
+        eat(TokenName.VARNAME);
         return n;
+    }
+
+    private static TokenName getVarType(Token in) {
+        switch (in.name) {
+            case UINT -> {return TokenName.UINT;}
+            default -> {
+                System.out.println("calling getVarType failed, var type " + in.name + " not included.");
+                error();
+                return TokenName.UNKNOWN;
+            }
+        }
     }
 
     private static Node empty() {

@@ -2,6 +2,7 @@ package com.github.jingerjesus.pandoracompiler.AST;
 
 import com.github.jingerjesus.pandoracompiler.Tokens.Token;
 import com.github.jingerjesus.pandoracompiler.Tokens.TokenName;
+import com.github.jingerjesus.pandoracompiler.VariableStorer;
 
 public class AssignOp extends Node{
 
@@ -12,6 +13,7 @@ public class AssignOp extends Node{
         setChildNodes(new Node[]{left, right});
         opType = oper.name;
         op = oper.value;
+        VariableStorer.GLOBAL_SCOPE.put(left.value, right.getValue());
     }
 
     @Override
